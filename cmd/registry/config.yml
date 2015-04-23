@@ -14,28 +14,21 @@ http:
     secret: asecretforlocaldevelopment
     debug:
         addr: localhost:5001
-redis:
-  addr: localhost:6379
-  pool:
-    maxidle: 16
-    maxactive: 64
-    idletimeout: 300s
-  dialtimeout: 10ms
-  readtimeout: 10ms
-  writetimeout: 10ms
+
+auth:
+  token:
+    realm: https://garant.dev.docker.com/token
+    service: registry.dev.docker.com
+    issuer: garant.dev.docker.com
+    rootcertbundle: cmd/registry/token_roots.pem
+
 notifications:
     endpoints:
-        - name: local-8082
-          url: http://localhost:5003/callback
+        - name: local-devhub
+          url: https://registry-hub.dev.docker.com/distribution_hooks/v1/
           headers:
-             Authorization: [Bearer <an example token>]
+             Authorization: [AuthToken testnotificationtoken]
           timeout: 1s
           threshold: 10
           backoff: 1s
-          disabled: true
-        - name: local-8083
-          url: http://localhost:8083/callback
-          timeout: 1s
-          threshold: 10
-          backoff: 1s
-          disabled: true
+          disabled: false
